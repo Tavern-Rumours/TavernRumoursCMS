@@ -17,6 +17,26 @@ class MetaDataService(
         ?: throw MetaDataNotFoundException("No id found to patch")
     }
 
+    fun patchDraft(id: UUID, isDraft: Boolean) = repository.save(
+        getData(id).copy(
+            isDraft = isDraft,
+            updateDate = Instant.now()
+        )
+    )
+
+    fun patchPublished(id: UUID, isPublished: Boolean) = repository.save(
+        getData(id).copy(
+            isPublished = isPublished,
+            updateDate = Instant.now()
+        )
+    )
+
+    fun patchContent(id: UUID) = repository.save(
+            getData(id).copy(
+                updateDate = Instant.now()
+            )
+        )
+
     fun save(data: MetaData): MetaData = repository.save(data)
 
     fun findMetaDataByAuthor(author: UUID): List<MetaData> {
@@ -29,5 +49,10 @@ class MetaDataService(
     fun deleteMetaData(id: UUID) {
         return if (repository.existsById(id)) repository.deleteById(id)
         else throw MetaDataNotFoundException("No data found to delete")
+    }
+
+    private fun getData(id: UUID): MetaData {
+        return if (repository.existsById(id)) repository.findById(id).get()
+        else throw MetaDataNotFoundException("No data found for ID")
     }
 }
