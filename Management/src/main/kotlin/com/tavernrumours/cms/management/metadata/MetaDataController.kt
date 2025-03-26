@@ -1,13 +1,7 @@
 package com.tavernrumours.cms.management.metadata
 
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
@@ -15,15 +9,18 @@ import java.util.*
 class MetaDataController(private val service: MetaDataService) {
 
     @GetMapping("/{author}")
-    fun getAllMetaDataByAuthor(@PathVariable author: UUID): ResponseEntity<List<MetaData>> {
-        val data = service.findMetaDataByAuthor(author)
-        return if (data.isNotEmpty()) ResponseEntity(data, HttpStatus.OK)
-        else ResponseEntity(HttpStatus.NOT_FOUND)
-    }
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllMetaDataByAuthor(@PathVariable author: UUID): List<MetaData> = service.findMetaDataByAuthor(author)
 
     @PostMapping("")
-    fun createMetaData(@RequestBody metaData: MetaData): ResponseEntity<MetaData> {
-        val created = service.save(metaData)
-        return ResponseEntity(created, HttpStatus.CREATED)
-    }
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createMetaData(@RequestBody metaData: MetaData): MetaData = service.save(metaData)
+
+    @PatchMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    fun updateMetaData(@RequestBody metaData: MetaData): MetaData = service.patch(metaData.id, metaData)
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteMetaData(@PathVariable id: UUID): Unit = service.deleteMetaData(id)
 }

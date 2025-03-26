@@ -13,11 +13,11 @@ data class MetaData(
     @Id
     @GeneratedValue
     val id: UUID?,
-    val title: String,
+    val title: String?,
     val author: UUID,
-    val isPublic: Boolean,
-    val isDraft: Boolean,
-    val creationDate: Instant = Instant.now(),
-    val updateDate: Instant = Instant.now(),
+    val isPublic: Boolean? = false,
+    val isDraft: Boolean? = true,
+    val creationDate: Instant? = Instant.now(),
+    val updateDate: Instant? = Instant.now(),
     val type: Int,
 )
