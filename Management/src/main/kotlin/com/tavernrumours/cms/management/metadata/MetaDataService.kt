@@ -37,6 +37,13 @@ class MetaDataService(
             )
         )
 
+    fun patchTitle(id: UUID, title: String) = repository.save(
+        getData(id).copy(
+            title = title,
+            updateDate = Instant.now()
+        )
+    )
+
     fun save(data: MetaData): MetaData = repository.save(data)
 
     fun findMetaDataByAuthor(author: UUID): List<MetaData> {

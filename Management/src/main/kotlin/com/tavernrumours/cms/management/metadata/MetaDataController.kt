@@ -16,10 +16,6 @@ class MetaDataController(private val service: MetaDataService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun createMetaData(@RequestBody metaData: MetaData): MetaData = service.save(metaData)
 
-    @PatchMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    fun updateMetaData(@RequestBody metaData: MetaData): MetaData = service.patch(metaData.id, metaData)
-
     @PatchMapping("/{contentId}", params = ["isDraft"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateIsDraft(@PathVariable contentId: UUID, @RequestParam isDraft: Boolean) = service.patchDraft(contentId, isDraft)
@@ -30,7 +26,9 @@ class MetaDataController(private val service: MetaDataService) {
 
     @PatchMapping("/{contentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateContent(@PathVariable contentId: UUID) = service.patchContent(contentId)
+    fun updateContent(@PathVariable contentId: UUID, @RequestBody title:String?) =
+        title?.let { service.patchTitle(contentId, it) }
+            ?: run { service.patchContent(contentId) }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
