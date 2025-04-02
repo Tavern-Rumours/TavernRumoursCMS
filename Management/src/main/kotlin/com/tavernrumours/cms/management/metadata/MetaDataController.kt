@@ -12,6 +12,14 @@ class MetaDataController(private val service: MetaDataService) {
     @ResponseStatus(HttpStatus.OK)
     fun getAllMetaDataByAuthor(@PathVariable author: UUID): List<MetaData> = service.findMetaDataByAuthor(author)
 
+    @GetMapping("", params = ["projectId"])
+    @ResponseStatus(HttpStatus.OK)
+    fun getMetaDataByProjectId(@RequestParam projectId: UUID): List<MetaData> = service.findMetaDataByProjectId(projectId)
+
+    @GetMapping("", params = ["categoryId"])
+    @ResponseStatus(HttpStatus.OK)
+    fun getMetaDataByCategoryId(@RequestParam categoryId: UUID): List<MetaData> = service.findMetaDataByCategoryId(categoryId)
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun createMetaData(@RequestBody metaData: MetaData): MetaData = service.save(metaData)
