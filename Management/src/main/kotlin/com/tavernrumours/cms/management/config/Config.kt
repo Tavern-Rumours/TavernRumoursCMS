@@ -8,7 +8,7 @@ import java.io.IOException
 import java.util.Properties
 
 @Component
-@ConfigurationProperties(prefix = "config")
+//@ConfigurationProperties(prefix = "config")
 @Validated
 class Config {
     final var username: String = ""

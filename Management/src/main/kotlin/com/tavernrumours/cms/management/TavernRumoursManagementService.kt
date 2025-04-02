@@ -16,7 +16,9 @@ class TavernRumoursManagementService {
 			require(config.username.isNotEmpty() || config.password.isNotEmpty())
 			val properties = Properties()
 			properties.setProperty("spring.datasource.username", config.username)
+			properties.setProperty("spring.data.mongodb.username", config.username)
 			properties.setProperty("spring.datasource.password", config.password)
+			properties.setProperty("spring.data.mongodb.password", config.password)
 
 			event.environment.propertySources.addFirst(PropertiesPropertySource("db_properties", properties))
 		}
